@@ -20,966 +20,252 @@
     --success: #7eb8a4;
     --wrong: #c47b6a;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Instrument Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* GRAIN OVERLAY */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0.4;
-  }
-
-  /* LAYOUT */
-  .shell {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 48px 24px 80px;
-  }
-
-  /* HEADER */
-  .lesson-header {
-    border-bottom: 1px solid var(--border);
-    padding-bottom: 32px;
-    margin-bottom: 48px;
-  }
-
-  .lesson-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .lesson-tag::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: clamp(32px, 5vw, 52px);
-    font-weight: 400;
-    line-height: 1.1;
-    color: var(--text);
-    margin-bottom: 12px;
-  }
-
-  h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  .subtitle {
-    font-size: 14px;
-    color: var(--text-dim);
-    font-family: 'DM Mono', monospace;
-    letter-spacing: 0.05em;
-  }
-
-  /* TIMER */
-  .timer-bar {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 14px 20px;
-    margin-bottom: 48px;
-    position: sticky;
-    top: 12px;
-    z-index: 100;
-  }
-
-  .timer-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    color: var(--text-dim);
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  .timer-display {
-    font-family: 'DM Mono', monospace;
-    font-size: 22px;
-    font-weight: 500;
-    color: var(--accent);
-    min-width: 60px;
-  }
-
+  body { background: var(--bg); color: var(--text); font-family: 'Instrument Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+  body::before { content: ''; position: fixed; inset: 0; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events: none; z-index: 9999; opacity: 0.4; }
+  .shell { max-width: 860px; margin: 0 auto; padding: 48px 24px 80px; }
+  .lesson-header { border-bottom: 1px solid var(--border); padding-bottom: 32px; margin-bottom: 48px; }
+  .lesson-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+  .lesson-tag::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  h1 { font-family: 'DM Serif Display', serif; font-size: clamp(32px, 5vw, 52px); font-weight: 400; line-height: 1.1; color: var(--text); margin-bottom: 12px; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .subtitle { font-size: 14px; color: var(--text-dim); font-family: 'DM Mono', monospace; letter-spacing: 0.05em; }
+  .timer-bar { display: flex; align-items: center; gap: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 14px 20px; margin-bottom: 48px; position: sticky; top: 12px; z-index: 100; }
+  .timer-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; color: var(--text-dim); text-transform: uppercase; white-space: nowrap; }
+  .timer-display { font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 500; color: var(--accent); min-width: 60px; }
   .timer-display.warning { color: var(--accent3); }
-
-  .progress-track {
-    flex: 1;
-    height: 3px;
-    background: var(--border);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: var(--accent);
-    border-radius: 2px;
-    transition: width 1s linear, background 1s;
-    width: 100%;
-  }
-
+  .progress-track { flex: 1; height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 1s linear, background 1s; width: 100%; }
   .progress-fill.warning { background: var(--accent3); }
-
-  .timer-btn {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--text-dim);
-    padding: 6px 12px;
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
+  .timer-btn { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; background: none; border: 1px solid var(--border); color: var(--text-dim); padding: 6px 12px; border-radius: 3px; cursor: pointer; transition: all 0.2s; }
   .timer-btn:hover { border-color: var(--accent); color: var(--accent); }
-
-  /* SECTIONS */
-  .section {
-    margin-bottom: 52px;
-    opacity: 0;
-    transform: translateY(16px);
-    animation: fadeUp 0.5s forwards;
-  }
-
-  @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
-
+  .section { margin-bottom: 52px; opacity: 0; transform: translateY(16px); animation: fadeUp 0.5s forwards; }
+  @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
   .section:nth-child(1) { animation-delay: 0.1s; }
   .section:nth-child(2) { animation-delay: 0.2s; }
-  .section:nth-child(3) { animation-delay: 0.3s; }
-  .section:nth-child(4) { animation-delay: 0.4s; }
-  .section:nth-child(5) { animation-delay: 0.5s; }
-
-  .section-header {
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-    margin-bottom: 20px;
-  }
-
-  .section-num {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--text-dimmer);
-    letter-spacing: 0.1em;
-    white-space: nowrap;
-  }
-
-  .section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    font-weight: 400;
-    color: var(--text);
-  }
-
-  .section-time {
-    margin-left: auto;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--accent);
-    letter-spacing: 0.1em;
-    white-space: nowrap;
-  }
-
-  /* CARDS */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 20px 24px;
-    margin-bottom: 12px;
-  }
-
-  .card p {
-    font-size: 14px;
-    line-height: 1.7;
-    color: var(--text);
-  }
-
+  .section-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 20px; }
+  .section-num { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-dimmer); letter-spacing: 0.1em; white-space: nowrap; }
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 22px; font-weight: 400; color: var(--text); }
+  .section-time { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--accent); letter-spacing: 0.1em; white-space: nowrap; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 20px 24px; margin-bottom: 12px; }
+  .card p { font-size: 14px; line-height: 1.7; color: var(--text); }
   .card p + p { margin-top: 10px; }
-
-  /* FEATURE GRID */
-  .feature-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 12px;
-    margin-bottom: 12px;
-  }
-
-  .feature-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 18px 20px;
-    transition: border-color 0.2s;
-  }
-
+  .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 12px; }
+  .feature-card { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 18px 20px; transition: border-color 0.2s; }
   .feature-card:hover { border-color: var(--accent); }
-
-  .feature-icon {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-
-  .feature-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 6px;
-  }
-
-  .feature-desc {
-    font-size: 13px;
-    color: var(--text-dim);
-    line-height: 1.6;
-  }
-
-  /* STRUCTURE DIAGRAM */
-  .structure-diagram {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    margin-bottom: 12px;
-  }
-
-  .struct-block {
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    padding: 14px 20px;
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    background: var(--surface);
-    transition: border-color 0.2s, background 0.2s;
-    cursor: default;
-  }
-
-  .struct-block:hover {
-    border-color: var(--accent);
-    background: var(--surface2);
-  }
-
+  .feature-icon { font-size: 20px; margin-bottom: 10px; }
+  .feature-title { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  .feature-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+  .structure-diagram { display: flex; flex-direction: column; gap: 2px; margin-bottom: 12px; }
+  .struct-block { border: 1px solid var(--border); border-radius: 3px; padding: 14px 20px; display: flex; align-items: flex-start; gap: 16px; background: var(--surface); transition: border-color 0.2s, background 0.2s; cursor: default; }
+  .struct-block:hover { border-color: var(--accent); background: var(--surface2); }
   .struct-block.hook { border-left: 3px solid var(--accent); }
   .struct-block.context { border-left: 3px solid var(--accent2); }
   .struct-block.body { border-left: 3px solid var(--accent); }
   .struct-block.counter { border-left: 3px solid var(--accent2); }
   .struct-block.conclusion { border-left: 3px solid var(--accent3); }
-
-  .struct-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    min-width: 90px;
-    padding-top: 2px;
-  }
-
+  .struct-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; min-width: 90px; padding-top: 2px; }
   .hook .struct-label { color: var(--accent); }
   .context .struct-label { color: var(--accent2); }
   .body .struct-label { color: var(--accent); }
   .counter .struct-label { color: var(--accent2); }
   .conclusion .struct-label { color: var(--accent3); }
-
   .struct-content { flex: 1; }
-
-  .struct-content strong {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text);
-    display: block;
-    margin-bottom: 4px;
-  }
-
-  .struct-content span {
-    font-size: 13px;
-    color: var(--text-dim);
-    line-height: 1.5;
-  }
-
-  .struct-words {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--text-dimmer);
-    margin-left: auto;
-    padding-left: 16px;
-    white-space: nowrap;
-    align-self: center;
-  }
-
-  /* QUIZ */
+  .struct-content strong { font-size: 14px; font-weight: 600; color: var(--text); display: block; margin-bottom: 4px; }
+  .struct-content span { font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+  .struct-words { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-dimmer); margin-left: auto; padding-left: 16px; white-space: nowrap; align-self: center; }
   .quiz-container { margin-bottom: 12px; }
-
-  .quiz-q {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 20px 24px;
-    margin-bottom: 10px;
-  }
-
-  .quiz-q-text {
-    font-size: 14px;
-    color: var(--text);
-    margin-bottom: 14px;
-    line-height: 1.6;
-  }
-
-  .quiz-options {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .quiz-option {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 10px 14px;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.15s;
-    background: var(--bg);
-    font-size: 13px;
-    line-height: 1.5;
-    color: var(--text-dim);
-    text-align: left;
-  }
-
-  .quiz-option:hover:not(.selected):not(.disabled) {
-    border-color: var(--text-dimmer);
-    color: var(--text);
-  }
-
-  .quiz-option.correct {
-    border-color: var(--success);
-    background: rgba(126, 184, 164, 0.08);
-    color: var(--text);
-  }
-
-  .quiz-option.wrong {
-    border-color: var(--wrong);
-    background: rgba(196, 123, 106, 0.08);
-    color: var(--text-dim);
-    text-decoration: line-through;
-  }
-
+  .quiz-q { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 20px 24px; margin-bottom: 10px; }
+  .quiz-q-text { font-size: 14px; color: var(--text); margin-bottom: 14px; line-height: 1.6; }
+  .quiz-options { display: flex; flex-direction: column; gap: 8px; }
+  .quiz-option { display: flex; align-items: flex-start; gap: 12px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 3px; cursor: pointer; transition: all 0.15s; background: var(--bg); font-size: 13px; line-height: 1.5; color: var(--text-dim); text-align: left; }
+  .quiz-option:hover:not(.selected):not(.disabled) { border-color: var(--text-dimmer); color: var(--text); }
+  .quiz-option.correct { border-color: var(--success); background: rgba(126,184,164,0.08); color: var(--text); }
+  .quiz-option.wrong { border-color: var(--wrong); background: rgba(196,123,106,0.08); color: var(--text-dim); text-decoration: line-through; }
   .quiz-option.disabled { cursor: default; }
-
-  .option-marker {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    min-width: 18px;
-    padding-top: 1px;
-    color: var(--text-dimmer);
-  }
-
-  .quiz-feedback {
-    font-size: 12px;
-    margin-top: 10px;
-    padding: 10px 14px;
-    border-radius: 3px;
-    line-height: 1.6;
-    display: none;
-  }
-
+  .option-marker { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; min-width: 18px; padding-top: 1px; color: var(--text-dimmer); }
+  .quiz-feedback { font-size: 12px; margin-top: 10px; padding: 10px 14px; border-radius: 3px; line-height: 1.6; display: none; }
   .quiz-feedback.show { display: block; }
   .quiz-feedback.correct { background: rgba(126,184,164,0.1); color: var(--success); border: 1px solid rgba(126,184,164,0.2); }
   .quiz-feedback.wrong { background: rgba(196,123,106,0.1); color: var(--accent3); border: 1px solid rgba(196,123,106,0.2); }
-
-  /* REGISTER SORT */
-  .register-task {
-    margin-bottom: 12px;
-  }
-
-  .register-prompt {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 16px 20px;
-    margin-bottom: 10px;
-    font-size: 14px;
-    color: var(--text-dim);
-    line-height: 1.6;
-    font-style: italic;
-  }
-
-  .register-options {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .register-btn {
-    padding: 8px 16px;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    background: var(--bg);
-    color: var(--text-dim);
-    font-size: 13px;
-    font-family: 'Instrument Sans', sans-serif;
-    cursor: pointer;
-    transition: all 0.15s;
-  }
-
+  .register-task { margin-bottom: 12px; }
+  .register-prompt { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 16px 20px; margin-bottom: 10px; font-size: 14px; color: var(--text-dim); line-height: 1.6; font-style: italic; }
+  .register-options { display: flex; gap: 8px; flex-wrap: wrap; }
+  .register-btn { padding: 8px 16px; border: 1px solid var(--border); border-radius: 3px; background: var(--bg); color: var(--text-dim); font-size: 13px; font-family: 'Instrument Sans', sans-serif; cursor: pointer; transition: all 0.15s; }
   .register-btn:hover:not(.selected) { border-color: var(--text-dimmer); color: var(--text); }
   .register-btn.correct { border-color: var(--success); color: var(--success); background: rgba(126,184,164,0.08); }
   .register-btn.wrong { border-color: var(--wrong); color: var(--wrong); background: rgba(196,123,106,0.08); }
-
-  /* CHECKLIST */
-  .checklist {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-
-  .check-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    padding: 12px 16px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    cursor: pointer;
-    transition: all 0.2s;
-    user-select: none;
-  }
-
-  .check-item.checked {
-    border-color: var(--accent);
-    background: rgba(200, 169, 110, 0.06);
-  }
-
-  .check-box {
-    width: 16px;
-    height: 16px;
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    margin-top: 1px;
-    transition: all 0.2s;
-    font-size: 10px;
-    color: transparent;
-  }
-
-  .check-item.checked .check-box {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: var(--bg);
-  }
-
-  .check-text {
-    font-size: 13px;
-    color: var(--text-dim);
-    line-height: 1.5;
-    transition: color 0.2s;
-  }
-
+  .checklist { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+  .check-item { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 3px; cursor: pointer; transition: all 0.2s; user-select: none; }
+  .check-item.checked { border-color: var(--accent); background: rgba(200,169,110,0.06); }
+  .check-box { width: 16px; height: 16px; border: 1px solid var(--border); border-radius: 2px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; transition: all 0.2s; font-size: 10px; color: transparent; }
+  .check-item.checked .check-box { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+  .check-text { font-size: 13px; color: var(--text-dim); line-height: 1.5; transition: color 0.2s; }
   .check-item.checked .check-text { color: var(--text); }
-
-  /* SCORE DISPLAY */
-  .score-display {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 16px;
-  }
-
-  .score-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-dim);
-  }
-
-  .score-value {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px;
-    color: var(--accent);
-  }
-
-  /* DIVIDER */
-  .divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 40px 0;
-  }
-
-  /* COLLAPSE TOGGLE */
-  .toggle-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    padding: 14px 20px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    margin-bottom: 2px;
-    transition: border-color 0.2s;
-  }
-
+  .score-display { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; margin-top: 16px; }
+  .score-label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dim); }
+  .score-value { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--accent); }
+  .toggle-header { display: flex; align-items: center; justify-content: space-between; cursor: pointer; padding: 14px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; margin-bottom: 2px; transition: border-color 0.2s; }
   .toggle-header:hover { border-color: var(--accent2); }
-
-  .toggle-title {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text);
-  }
-
-  .toggle-arrow {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--text-dim);
-    transition: transform 0.2s;
-  }
-
+  .toggle-title { font-size: 14px; font-weight: 500; color: var(--text); }
+  .toggle-arrow { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--text-dim); transition: transform 0.2s; }
   .toggle-header.open .toggle-arrow { transform: rotate(90deg); }
-
-  .toggle-body {
-    display: none;
-    padding: 16px 20px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-top: none;
-    border-radius: 0 0 4px 4px;
-    font-size: 13px;
-    color: var(--text-dim);
-    line-height: 1.7;
-    margin-bottom: 8px;
-  }
-
+  .toggle-body { display: none; padding: 16px 20px; background: var(--surface2); border: 1px solid var(--border); border-top: none; border-radius: 0 0 4px 4px; font-size: 13px; color: var(--text-dim); line-height: 1.7; margin-bottom: 8px; }
   .toggle-body.open { display: block; }
-
-  /* PHRASE BANK */
-  .phrase-bank {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 12px;
-  }
-
-  .phrase-chip {
-    padding: 6px 12px;
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    font-size: 12px;
-    color: var(--text-dim);
-    background: var(--surface);
-    cursor: default;
-    transition: all 0.15s;
-  }
-
+  .phrase-bank { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .phrase-chip { padding: 6px 12px; border: 1px solid var(--border); border-radius: 20px; font-size: 12px; color: var(--text-dim); background: var(--surface); cursor: default; transition: all 0.15s; }
   .phrase-chip:hover { border-color: var(--accent2); color: var(--text); }
   .phrase-chip.hook-phrase { border-color: rgba(200,169,110,0.3); }
   .phrase-chip.body-phrase { border-color: rgba(126,184,164,0.3); }
   .phrase-chip.counter-phrase { border-color: rgba(196,123,106,0.3); }
   .phrase-chip.concl-phrase { border-color: rgba(200,169,110,0.3); }
-
-  .phrase-group-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-dimmer);
-    margin-bottom: 8px;
-    margin-top: 14px;
-  }
-
-  /* BOTTOM NAV */
-  .bottom-nav {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-    margin-top: 60px;
-    padding-top: 32px;
-    border-top: 1px solid var(--border);
-  }
-
-  .nav-btn {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    padding: 10px 20px;
-    border-radius: 3px;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    background: none;
-    color: var(--text-dim);
-    transition: all 0.2s;
-  }
-
+  .phrase-group-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-dimmer); margin-bottom: 8px; margin-top: 14px; }
+  .bottom-nav { display: flex; gap: 10px; justify-content: center; margin-top: 60px; padding-top: 32px; border-top: 1px solid var(--border); }
+  .nav-btn { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; padding: 10px 20px; border-radius: 3px; cursor: pointer; border: 1px solid var(--border); background: none; color: var(--text-dim); transition: all 0.2s; }
   .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
   .nav-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(200,169,110,0.08); }
-
-  /* HIGHLIGHT */
-  mark {
-    background: rgba(200,169,110,0.15);
-    color: var(--accent);
-    padding: 1px 4px;
-    border-radius: 2px;
-    font-style: normal;
-  }
-
-  .mono { font-family: 'DM Mono', monospace; font-size: 12px; }
-
-  /* PAGE SYSTEM */
+  mark { background: rgba(200,169,110,0.15); color: var(--accent); padding: 1px 4px; border-radius: 2px; font-style: normal; }
   .page { display: none; }
   .page.active { display: block; }
-
-  @media (max-width: 600px) {
-    .shell { padding: 24px 16px 60px; }
-    .feature-grid { grid-template-columns: 1fr 1fr; }
-    .timer-bar { flex-wrap: wrap; }
-  }
+  @media (max-width: 600px) { .shell { padding: 24px 16px 60px; } .feature-grid { grid-template-columns: 1fr 1fr; } .timer-bar { flex-wrap: wrap; } }
 </style>
 </head>
 <body>
 <div class="shell">
-
-  <!-- HEADER -->
   <div class="lesson-header">
-    <div class="lesson-tag">Year 10 · B2–C1 · Zentralabitur Exam Technique · 20 min</div>
+    <div class="lesson-tag">Year 10 · B1 · ZKA Exam Technique · 20 min</div>
     <h1>Writing an <em>Article</em></h1>
     <div class="subtitle">How to meet the task — and be remembered for it</div>
   </div>
-
-  <!-- TIMER -->
   <div class="timer-bar">
     <span class="timer-label">Time</span>
     <span class="timer-display" id="timerDisplay">20:00</span>
-    <div class="progress-track">
-      <div class="progress-fill" id="progressFill"></div>
-    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
     <button class="timer-btn" id="timerBtn" onclick="toggleTimer()">Start</button>
   </div>
-
-  <!-- PAGE NAV -->
-  <div class="bottom-nav" style="margin-top:0; margin-bottom: 40px; padding-top:0; border-top:none; border-bottom: 1px solid var(--border); padding-bottom: 24px;">
-    <button class="nav-btn active" onclick="goPage(0, this)">1 · What Is It?</button>
-    <button class="nav-btn" onclick="goPage(1, this)">2 · Structure</button>
-    <button class="nav-btn" onclick="goPage(2, this)">3 · Register</button>
-    <button class="nav-btn" onclick="goPage(3, this)">4 · Phrases</button>
-    <button class="nav-btn" onclick="goPage(4, this)">5 · Check</button>
+  <div class="bottom-nav" style="margin-top:0; margin-bottom:40px; padding-top:0; border-top:none; border-bottom:1px solid var(--border); padding-bottom:24px;">
+    <button class="nav-btn active" onclick="goPage(0,this)">1 · What Is It?</button>
+    <button class="nav-btn" onclick="goPage(1,this)">2 · Structure</button>
+    <button class="nav-btn" onclick="goPage(2,this)">3 · Register</button>
+    <button class="nav-btn" onclick="goPage(3,this)">4 · Phrases</button>
+    <button class="nav-btn" onclick="goPage(4,this)">5 · Check</button>
   </div>
-
-  <!-- =================== PAGE 1: WHAT IS AN ARTICLE? =================== -->
   <div class="page active" id="page-0">
-
     <div class="section">
-      <div class="section-header">
-        <span class="section-num">01 /</span>
-        <span class="section-title">What exactly is an article?</span>
-        <span class="section-time">~ 4 min</span>
-      </div>
-
+      <div class="section-header"><span class="section-num">01 /</span><span class="section-title">What exactly is an article?</span><span class="section-time">~ 4 min</span></div>
       <div class="card" style="margin-bottom:16px;">
-        <p>In the Abitur, an <mark>article</mark> is a piece of writing for a named publication — a school magazine, a newspaper, a website. It has a <strong>real audience</strong>, a <strong>specific purpose</strong> (to inform, argue, or entertain), and a <strong>distinctive voice</strong>. It is <em>not</em> an essay.</p>
-        <p style="margin-top:12px; font-size:13px; color: var(--text-dim);">The task will tell you: the <mark>topic</mark>, the <mark>publication</mark>, and sometimes the <mark>target reader</mark>. Read these carefully — they determine your register, tone, and content.</p>
+        <p>In the ZKA, an <mark>article</mark> is a piece of writing for a named publication — a school magazine, a newspaper, a website. It has a <strong>real audience</strong>, a <strong>specific purpose</strong> (to inform, argue, or entertain), and a <strong>distinctive voice</strong>. It is <em>not</em> an essay.</p>
+        <p style="margin-top:12px;font-size:13px;color:var(--text-dim);">The task will tell you: the <mark>topic</mark>, the <mark>publication</mark>, and sometimes the <mark>target reader</mark>. Read these carefully — they determine your register, tone, and content.</p>
       </div>
-
       <div class="feature-grid">
-        <div class="feature-card">
-          <div class="feature-icon">🎯</div>
-          <div class="feature-title">Has a purpose</div>
-          <div class="feature-desc">Inform, argue, persuade, entertain — or a mix. The task prompt tells you which.</div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">👥</div>
-          <div class="feature-title">Has a real reader</div>
-          <div class="feature-desc">A school magazine reader ≠ a broadsheet reader. Adjust accordingly.</div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">🗣️</div>
-          <div class="feature-title">Has a voice</div>
-          <div class="feature-desc">Articles sound like a person — not a textbook. Use direct address, rhetorical questions, opinions.</div>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">📰</div>
-          <div class="feature-title">Has a headline</div>
-          <div class="feature-desc">Always include one. It's part of the task, and it signals competence to the examiner.</div>
-        </div>
+        <div class="feature-card"><div class="feature-icon">🎯</div><div class="feature-title">Has a purpose</div><div class="feature-desc">Inform, argue, persuade, entertain — or a mix. The task prompt tells you which.</div></div>
+        <div class="feature-card"><div class="feature-icon">👥</div><div class="feature-title">Has a real reader</div><div class="feature-desc">A school magazine reader ≠ a broadsheet reader. Adjust accordingly.</div></div>
+        <div class="feature-card"><div class="feature-icon">🗣️</div><div class="feature-title">Has a voice</div><div class="feature-desc">Articles sound like a person — not a textbook. Use direct address, rhetorical questions, opinions.</div></div>
+        <div class="feature-card"><div class="feature-icon">📰</div><div class="feature-title">Has a headline</div><div class="feature-desc">Always include one. It's part of the task, and it signals competence to the examiner.</div></div>
       </div>
     </div>
-
     <div class="section">
-      <div class="section-header">
-        <span class="section-num">02 /</span>
-        <span class="section-title">Article vs Essay — quick quiz</span>
-      </div>
-
+      <div class="section-header"><span class="section-num">02 /</span><span class="section-title">Article vs Essay — quick quiz</span></div>
       <div class="quiz-container">
-
         <div class="quiz-q" id="q1">
           <div class="quiz-q-text">The examiner wants to see <strong>formal academic language</strong> in a school magazine article.</div>
           <div class="quiz-options">
-            <button class="quiz-option" onclick="answer(this, 'q1', false)"><span class="option-marker">A</span> True — formal language always scores higher</button>
-            <button class="quiz-option" onclick="answer(this, 'q1', true)"><span class="option-marker">B</span> False — register depends on the publication and audience</button>
+            <button class="quiz-option" onclick="answer(this,'q1',false)"><span class="option-marker">A</span> True — formal language always scores higher</button>
+            <button class="quiz-option" onclick="answer(this,'q1',true)"><span class="option-marker">B</span> False — register depends on the publication and audience</button>
           </div>
           <div class="quiz-feedback" id="q1-fb"></div>
         </div>
-
         <div class="quiz-q" id="q2">
           <div class="quiz-q-text">Which of these is a <strong>correct</strong> article opening?</div>
           <div class="quiz-options">
-            <button class="quiz-option" onclick="answer(this, 'q2', false)"><span class="option-marker">A</span> "In this article, I will discuss the advantages and disadvantages of social media."</button>
-            <button class="quiz-option" onclick="answer(this, 'q2', true)"><span class="option-marker">B</span> "Scrolling through your feed at midnight — sound familiar? You are not alone."</button>
-            <button class="quiz-option" onclick="answer(this, 'q2', false)"><span class="option-marker">C</span> "Social media has many positive and negative effects on young people today."</button>
+            <button class="quiz-option" onclick="answer(this,'q2',false)"><span class="option-marker">A</span> "In this article, I will discuss the advantages and disadvantages of social media."</button>
+            <button class="quiz-option" onclick="answer(this,'q2',true)"><span class="option-marker">B</span> "Scrolling through your feed at midnight — sound familiar? You are not alone."</button>
+            <button class="quiz-option" onclick="answer(this,'q2',false)"><span class="option-marker">C</span> "Social media has many positive and negative effects on young people today."</button>
           </div>
           <div class="quiz-feedback" id="q2-fb"></div>
         </div>
-
         <div class="quiz-q" id="q3">
           <div class="quiz-q-text">You do <strong>not</strong> need to include a headline. The examiner will assume the title.</div>
           <div class="quiz-options">
-            <button class="quiz-option" onclick="answer(this, 'q3', false)"><span class="option-marker">A</span> True — the prompt title is enough</button>
-            <button class="quiz-option" onclick="answer(this, 'q3', true)"><span class="option-marker">B</span> False — always write your own headline</button>
+            <button class="quiz-option" onclick="answer(this,'q3',false)"><span class="option-marker">A</span> True — the prompt title is enough</button>
+            <button class="quiz-option" onclick="answer(this,'q3',true)"><span class="option-marker">B</span> False — always write your own headline</button>
           </div>
           <div class="quiz-feedback" id="q3-fb"></div>
         </div>
-
       </div>
-
-      <div class="score-display" id="score-p1" style="display:none;">
-        <span class="score-label">Score</span>
-        <span class="score-value" id="score-p1-val">0 / 3</span>
-      </div>
+      <div class="score-display" id="score-p1" style="display:none;"><span class="score-label">Score</span><span class="score-value" id="score-p1-val">0 / 3</span></div>
     </div>
-
   </div>
-
-  <!-- =================== PAGE 2: STRUCTURE =================== -->
   <div class="page" id="page-1">
-
     <div class="section">
-      <div class="section-header">
-        <span class="section-num">03 /</span>
-        <span class="section-title">Anatomy of an article</span>
-        <span class="section-time">~ 5 min</span>
-      </div>
-
-      <div class="card" style="margin-bottom: 16px;">
-        <p>Target length in the Abitur: approximately <mark>250–350 words</mark>. Plan before you write — 2 minutes of planning saves 5 minutes of rewriting.</p>
-      </div>
-
+      <div class="section-header"><span class="section-num">03 /</span><span class="section-title">Anatomy of an article</span><span class="section-time">~ 5 min</span></div>
+      <div class="card" style="margin-bottom:16px;"><p>At B1 level, focus on clarity and coherence over complexity. Target length in the ZKA: approximately <mark>200–250 words</mark>. Plan before you write — 2 minutes of planning saves 5 minutes of rewriting.</p></div>
       <div class="structure-diagram">
-        <div class="struct-block hook">
-          <span class="struct-label">Hook</span>
-          <div class="struct-content">
-            <strong>Opening that grabs attention</strong>
-            <span>Anecdote, statistic, question, bold claim. Never start with "In this article I will..."</span>
-          </div>
-          <span class="struct-words">~40 words</span>
-        </div>
-        <div class="struct-block context">
-          <span class="struct-label">Context</span>
-          <div class="struct-content">
-            <strong>Frame the issue</strong>
-            <span>What is the situation? Why does it matter? Orient the reader in 2–3 sentences.</span>
-          </div>
-          <span class="struct-words">~50 words</span>
-        </div>
-        <div class="struct-block body">
-          <span class="struct-label">Point 1 + 2</span>
-          <div class="struct-content">
-            <strong>Main argument / points</strong>
-            <span>Each paragraph = one main idea + evidence or example + brief comment. No lists.</span>
-          </div>
-          <span class="struct-words">~120 words</span>
-        </div>
-        <div class="struct-block counter">
-          <span class="struct-label">Counterpoint</span>
-          <div class="struct-content">
-            <strong>Acknowledge the other side</strong>
-            <span>One sentence is enough. Shows critical thinking. Then refute or qualify it.</span>
-          </div>
-          <span class="struct-words">~30 words</span>
-        </div>
-        <div class="struct-block conclusion">
-          <span class="struct-label">Close</span>
-          <div class="struct-content">
-            <strong>Memorable ending</strong>
-            <span>Return to the hook, end with a call to action, or leave the reader with a resonant question.</span>
-          </div>
-          <span class="struct-words">~40 words</span>
-        </div>
+        <div class="struct-block hook"><span class="struct-label">Hook</span><div class="struct-content"><strong>Opening that grabs attention</strong><span>Anecdote, statistic, question, bold claim. Never start with "In this article I will..."</span></div><span class="struct-words">~40 words</span></div>
+        <div class="struct-block context"><span class="struct-label">Context</span><div class="struct-content"><strong>Frame the issue</strong><span>What is the situation? Why does it matter? Orient the reader in 2–3 sentences.</span></div><span class="struct-words">~50 words</span></div>
+        <div class="struct-block body"><span class="struct-label">Point 1 + 2</span><div class="struct-content"><strong>Main argument / points</strong><span>Each paragraph = one main idea + evidence or example + brief comment. No lists.</span></div><span class="struct-words">~120 words</span></div>
+        <div class="struct-block counter"><span class="struct-label">Counterpoint</span><div class="struct-content"><strong>Acknowledge the other side</strong><span>One sentence is enough. Shows critical thinking. Then refute or qualify it.</span></div><span class="struct-words">~30 words</span></div>
+        <div class="struct-block conclusion"><span class="struct-label">Close</span><div class="struct-content"><strong>Memorable ending</strong><span>Return to the hook, end with a call to action, or leave the reader with a resonant question.</span></div><span class="struct-words">~40 words</span></div>
       </div>
     </div>
-
     <div class="section">
-      <div class="section-header">
-        <span class="section-num">04 /</span>
-        <span class="section-title">Common structural mistakes</span>
-      </div>
-
-      <div class="toggle-header" onclick="toggleCollapse(this)">
-        <span class="toggle-title">❌ Writing an essay introduction instead of a hook</span>
-        <span class="toggle-arrow">▶</span>
-      </div>
-      <div class="toggle-body">
-        "There are many opinions about social media. Some people think it is good, while others disagree." — This is vague, impersonal, and instantly forgettable. Start with something that puts the reader inside a moment or a problem.
-      </div>
-
-      <div class="toggle-header" onclick="toggleCollapse(this)">
-        <span class="toggle-title">❌ Using bullet points or numbered lists</span>
-        <span class="toggle-arrow">▶</span>
-      </div>
-      <div class="toggle-body">
-        Lists are not articles. They suggest you can't develop ideas in full sentences. The examiner is assessing your ability to write coherent, flowing prose. Every point needs a sentence, a paragraph, a voice.
-      </div>
-
-      <div class="toggle-header" onclick="toggleCollapse(this)">
-        <span class="toggle-title">❌ Forgetting the publication context</span>
-        <span class="toggle-arrow">▶</span>
-      </div>
-      <div class="toggle-body">
-        If the task says "write for your school's English-language magazine," your tone should be accessible, direct, and slightly personal — not formal and distant. If it says "a broadsheet newspaper supplement," elevate your register. The publication is a constraint you must respect.
-      </div>
-
-      <div class="toggle-header" onclick="toggleCollapse(this)">
-        <span class="toggle-title">❌ A conclusion that just summarises</span>
-        <span class="toggle-arrow">▶</span>
-      </div>
-      <div class="toggle-body">
-        "In conclusion, I have shown that social media has advantages and disadvantages." You have wasted the last impression. End with something that resonates — a call to action, a provocative question, a return to the opening image.
-      </div>
+      <div class="section-header"><span class="section-num">04 /</span><span class="section-title">Common structural mistakes</span></div>
+      <div class="toggle-header" onclick="toggleCollapse(this)"><span class="toggle-title">❌ Writing an essay introduction instead of a hook</span><span class="toggle-arrow">▶</span></div>
+      <div class="toggle-body">"There are many opinions about social media. Some people think it is good, while others disagree." — This is vague, impersonal, and instantly forgettable. Start with something that puts the reader inside a moment or a problem.</div>
+      <div class="toggle-header" onclick="toggleCollapse(this)"><span class="toggle-title">❌ Using bullet points or numbered lists</span><span class="toggle-arrow">▶</span></div>
+      <div class="toggle-body">Lists are not articles. They suggest you can't develop ideas in full sentences. The examiner is assessing your ability to write coherent, flowing prose. Every point needs a sentence, a paragraph, a voice.</div>
+      <div class="toggle-header" onclick="toggleCollapse(this)"><span class="toggle-title">❌ Forgetting the publication context</span><span class="toggle-arrow">▶</span></div>
+      <div class="toggle-body">If the task says "write for your school's English-language magazine," your tone should be accessible, direct, and slightly personal — not formal and distant. The publication is a constraint you must respect.</div>
+      <div class="toggle-header" onclick="toggleCollapse(this)"><span class="toggle-title">❌ A conclusion that just summarises</span><span class="toggle-arrow">▶</span></div>
+      <div class="toggle-body">"In conclusion, I have shown that social media has advantages and disadvantages." You have wasted the last impression. End with something that resonates — a call to action, a question, a return to the opening image.</div>
     </div>
-
   </div>
-
-  <!-- =================== PAGE 3: REGISTER =================== -->
   <div class="page" id="page-2">
-
     <div class="section">
-      <div class="section-header">
-        <span class="section-num">05 /</span>
-        <span class="section-title">Register: reading the room</span>
-        <span class="section-time">~ 4 min</span>
-      </div>
-
-      <div class="card" style="margin-bottom: 16px;">
-        <p>Register is not just "formal or informal." It's the <mark>relationship between writer, reader, and purpose</mark>. In the Abitur task, look for three signals: the <strong>publication</strong>, the <strong>target audience</strong>, and the <strong>purpose</strong>. These three tell you everything.</p>
-      </div>
-
+      <div class="section-header"><span class="section-num">05 /</span><span class="section-title">Register: reading the room</span><span class="section-time">~ 4 min</span></div>
+      <div class="card" style="margin-bottom:16px;"><p>Register is not just "formal or informal." It's the <mark>relationship between writer, reader, and purpose</mark>. In the ZKA task, look for three signals: the <strong>publication</strong>, the <strong>target audience</strong>, and the <strong>purpose</strong>. These three tell you everything.</p></div>
       <div class="feature-grid" style="margin-bottom:20px;">
-        <div class="feature-card" style="border-color: rgba(200,169,110,0.3);">
-          <div class="feature-title" style="color:var(--accent);">School Magazine</div>
-          <div class="feature-desc">Friendly, direct, personal. Use "you". Rhetorical questions work well. Light humour is fine.</div>
-        </div>
-        <div class="feature-card" style="border-color: rgba(126,184,164,0.3);">
-          <div class="feature-title" style="color:var(--accent2);">Quality Newspaper</div>
-          <div class="feature-desc">Measured, authoritative. Third person or controlled first person. Avoid slang. Opinions must be supported.</div>
-        </div>
-        <div class="feature-card" style="border-color: rgba(196,123,106,0.3);">
-          <div class="feature-title" style="color:var(--accent3);">Online Platform / Blog</div>
-          <div class="feature-desc">Punchy, engaging. Short paragraphs. Can be more conversational. Subheadings possible.</div>
-        </div>
+        <div class="feature-card" style="border-color:rgba(200,169,110,0.3);"><div class="feature-title" style="color:var(--accent);">School Magazine</div><div class="feature-desc">Friendly, direct, personal. Use "you". Rhetorical questions work well. Light humour is fine.</div></div>
+        <div class="feature-card" style="border-color:rgba(126,184,164,0.3);"><div class="feature-title" style="color:var(--accent2);">Quality Newspaper</div><div class="feature-desc">Measured, authoritative. Third person or controlled first person. Avoid slang. Opinions must be supported.</div></div>
+        <div class="feature-card" style="border-color:rgba(196,123,106,0.3);"><div class="feature-title" style="color:var(--accent3);">Online Platform / Blog</div><div class="feature-desc">Punchy, engaging. Short paragraphs. Can be more conversational. Subheadings possible.</div></div>
       </div>
     </div>
-
     <div class="section">
-      <div class="section-header">
-        <span class="section-num">06 /</span>
-        <span class="section-title">Register sort — which publication fits?</span>
-      </div>
-
-      <p style="font-size:13px; color:var(--text-dim); margin-bottom:16px;">Read each sentence. Choose the publication it best suits.</p>
-
+      <div class="section-header"><span class="section-num">06 /</span><span class="section-title">Register sort — which publication fits?</span></div>
+      <p style="font-size:13px;color:var(--text-dim);margin-bottom:16px;">Read each sentence. Choose the publication it best suits.</p>
       <div class="register-task">
         <div class="register-prompt">"Have you ever wondered whether the food on your plate has a political history?"</div>
         <div class="register-options">
-          <button class="register-btn" onclick="registerAnswer(this, true, 'reg1')">School Magazine</button>
-          <button class="register-btn" onclick="registerAnswer(this, false, 'reg1')">Quality Newspaper</button>
-          <button class="register-btn" onclick="registerAnswer(this, false, 'reg1')">Science Journal</button>
+          <button class="register-btn" onclick="registerAnswer(this,true,'reg1')">School Magazine</button>
+          <button class="register-btn" onclick="registerAnswer(this,false,'reg1')">Quality Newspaper</button>
+          <button class="register-btn" onclick="registerAnswer(this,false,'reg1')">Science Journal</button>
         </div>
         <div class="quiz-feedback" id="reg1-fb"></div>
       </div>
-
       <div class="register-task">
         <div class="register-prompt">"The correlation between urban food deserts and socioeconomic marginalisation demands structural intervention."</div>
         <div class="register-options">
-          <button class="register-btn" onclick="registerAnswer(this, false, 'reg2')">School Magazine</button>
-          <button class="register-btn" onclick="registerAnswer(this, false, 'reg2')">Lifestyle Blog</button>
-          <button class="register-btn" onclick="registerAnswer(this, true, 'reg2')">Quality Newspaper</button>
+          <button class="register-btn" onclick="registerAnswer(this,false,'reg2')">School Magazine</button>
+          <button class="register-btn" onclick="registerAnswer(this,false,'reg2')">Lifestyle Blog</button>
+          <button class="register-btn" onclick="registerAnswer(this,true,'reg2')">Quality Newspaper</button>
         </div>
         <div class="quiz-feedback" id="reg2-fb"></div>
       </div>
-
       <div class="register-task">
         <div class="register-prompt">"Five things you didn't know your school canteen could tell you about inequality."</div>
         <div class="register-options">
-          <button class="register-btn" onclick="registerAnswer(this, true, 'reg3')">Online Platform</button>
-          <button class="register-btn" onclick="registerAnswer(this, false, 'reg3')">Quality Newspaper</button>
-          <button class="register-btn" onclick="registerAnswer(this, false, 'reg3')">Academic Essay</button>
+          <button class="register-btn" onclick="registerAnswer(this,true,'reg3')">Online Platform</button>
+          <button class="register-btn" onclick="registerAnswer(this,false,'reg3')">Quality Newspaper</button>
+          <button class="register-btn" onclick="registerAnswer(this,false,'reg3')">Academic Essay</button>
         </div>
         <div class="quiz-feedback" id="reg3-fb"></div>
       </div>
-
     </div>
-
   </div>
-
-  <!-- =================== PAGE 4: PHRASES =================== -->
   <div class="page" id="page-3">
-
     <div class="section">
-      <div class="section-header">
-        <span class="section-num">07 /</span>
-        <span class="section-title">Phrase bank — ready to use</span>
-        <span class="section-time">~ 4 min</span>
-      </div>
-
-      <div class="card" style="margin-bottom:20px;">
-        <p>These are <mark>templates</mark>, not scripts. Use them as scaffolding, then adapt them to your topic and voice. The examiner notices both fluency <em>and</em> authenticity.</p>
-      </div>
-
+      <div class="section-header"><span class="section-num">07 /</span><span class="section-title">Phrase bank — ready to use</span><span class="section-time">~ 4 min</span></div>
+      <div class="card" style="margin-bottom:20px;"><p>These are <mark>templates</mark>, not scripts. Use them as scaffolding, then adapt them to your topic and voice. The examiner notices both fluency <em>and</em> authenticity.</p></div>
       <div class="phrase-group-label">Opening / Hook</div>
       <div class="phrase-bank">
         <span class="phrase-chip hook-phrase">Picture this: ...</span>
@@ -988,7 +274,6 @@
         <span class="phrase-chip hook-phrase">According to [source], X in Y people ...</span>
         <span class="phrase-chip hook-phrase">We all know the feeling of ...</span>
       </div>
-
       <div class="phrase-group-label">Developing a point</div>
       <div class="phrase-bank">
         <span class="phrase-chip body-phrase">Consider, for instance, ...</span>
@@ -998,7 +283,6 @@
         <span class="phrase-chip body-phrase">Take [example]: here we see ...</span>
         <span class="phrase-chip body-phrase">The implications of this are significant.</span>
       </div>
-
       <div class="phrase-group-label">Counterpoint</div>
       <div class="phrase-bank">
         <span class="phrase-chip counter-phrase">Of course, some would argue that ...</span>
@@ -1006,7 +290,6 @@
         <span class="phrase-chip counter-phrase">Critics point out that ... Yet this misses ...</span>
         <span class="phrase-chip counter-phrase">Not everyone agrees. And yet ...</span>
       </div>
-
       <div class="phrase-group-label">Conclusion / Close</div>
       <div class="phrase-bank">
         <span class="phrase-chip concl-phrase">The question is not whether ... but when.</span>
@@ -1016,268 +299,109 @@
         <span class="phrase-chip concl-phrase">The answer may surprise you — but only if you are willing to look.</span>
       </div>
     </div>
-
     <div class="section">
-      <div class="section-header">
-        <span class="section-num">08 /</span>
-        <span class="section-title">Headline craft</span>
-      </div>
-
-      <div class="card">
-        <p>Your headline should do one of three things: <mark>intrigue</mark>, <mark>provoke</mark>, or <mark>promise</mark>. Aim for under 10 words. Avoid full stops. Use colons to separate a hook from a subtitle.</p>
-      </div>
-
-      <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
-        <div style="padding:12px 16px; background:var(--surface); border:1px solid var(--border); border-radius:3px; font-size:14px; color:var(--text-dim);">
-          <span style="color:var(--text-dimmer); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; display:block; margin-bottom:4px;">❌ Weak</span>
-          "The advantages and disadvantages of social media for young people"
-        </div>
-        <div style="padding:12px 16px; background:var(--surface); border:1px solid rgba(126,184,164,0.3); border-radius:3px; font-size:14px; color:var(--text);">
-          <span style="color:var(--accent2); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; display:block; margin-bottom:4px;">✓ Better</span>
-          "Scroll, Compare, Despair: The Hidden Cost of the Like Button"
-        </div>
-        <div style="padding:12px 16px; background:var(--surface); border:1px solid rgba(126,184,164,0.3); border-radius:3px; font-size:14px; color:var(--text);">
-          <span style="color:var(--accent2); font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; display:block; margin-bottom:4px;">✓ Better</span>
-          "Is Your Phone Watching You — or the Other Way Round?"
-        </div>
+      <div class="section-header"><span class="section-num">08 /</span><span class="section-title">Headline craft</span></div>
+      <div class="card"><p>Your headline should do one of three things: <mark>intrigue</mark>, <mark>provoke</mark>, or <mark>promise</mark>. Aim for under 10 words. Avoid full stops. Use colons to separate a hook from a subtitle.</p></div>
+      <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
+        <div style="padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:3px;font-size:14px;color:var(--text-dim);"><span style="color:var(--text-dimmer);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:4px;">❌ Weak</span>"The advantages and disadvantages of social media for young people"</div>
+        <div style="padding:12px 16px;background:var(--surface);border:1px solid rgba(126,184,164,0.3);border-radius:3px;font-size:14px;color:var(--text);"><span style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:4px;">✓ Better</span>"Scroll, Compare, Despair: The Hidden Cost of the Like Button"</div>
+        <div style="padding:12px 16px;background:var(--surface);border:1px solid rgba(126,184,164,0.3);border-radius:3px;font-size:14px;color:var(--text);"><span style="color:var(--accent2);font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:4px;">✓ Better</span>"Is Your Phone Watching You — or the Other Way Round?"</div>
       </div>
     </div>
-
   </div>
-
-  <!-- =================== PAGE 5: EXAM CHECKLIST =================== -->
   <div class="page" id="page-4">
-
     <div class="section">
-      <div class="section-header">
-        <span class="section-num">09 /</span>
-        <span class="section-title">Before you hand it in</span>
-        <span class="section-time">~ 3 min</span>
-      </div>
-
-      <div class="card" style="margin-bottom:20px;">
-        <p>Use this as your <mark>final 3-minute check</mark> after writing. Click each item when you've confirmed it. Aim for all ten.</p>
-      </div>
-
+      <div class="section-header"><span class="section-num">09 /</span><span class="section-title">Before you hand it in</span><span class="section-time">~ 3 min</span></div>
+      <div class="card" style="margin-bottom:20px;"><p>Use this as your <mark>final 3-minute check</mark> after writing. Click each item when you've confirmed it. Aim for all ten.</p></div>
       <div class="checklist" id="checklist">
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-text"><strong>Headline written</strong> — not the task title. Your own, specific headline.</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-text"><strong>Opening is a hook</strong> — not "In this article I will discuss..."</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-text"><strong>Register matches the publication</strong> — school mag, newspaper, or platform.</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-text"><strong>Each paragraph has one main idea</strong> — no lists, no bullet points.</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-text"><strong>At least one counterpoint acknowledged</strong> — and addressed.</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-text"><strong>Conclusion does not just summarise</strong> — ends with impact.</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-text"><strong>Reader addressed directly</strong> at least once — "you", rhetorical question, or direct appeal.</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-text"><strong>Word count within range</strong> — roughly 250–350 words.</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-text"><strong>No major grammar errors</strong> — especially tense consistency and article use.</div>
-        </div>
-        <div class="check-item" onclick="toggleCheck(this)">
-          <div class="check-box">✓</div>
-          <div class="check-text"><strong>Varied sentence length</strong> — mix of short punchy sentences and longer analytical ones.</div>
-        </div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text"><strong>Headline written</strong> — not the task title. Your own, specific headline.</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text"><strong>Opening is a hook</strong> — not "In this article I will discuss..."</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text"><strong>Register matches the publication</strong> — school mag, newspaper, or platform.</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text"><strong>Each paragraph has one main idea</strong> — no lists, no bullet points.</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text"><strong>At least one counterpoint acknowledged</strong> — and addressed.</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text"><strong>Conclusion does not just summarise</strong> — ends with impact.</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text"><strong>Reader addressed directly</strong> at least once — "you", rhetorical question, or direct appeal.</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text"><strong>Word count within range</strong> — roughly 200–250 words.</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text"><strong>No major grammar errors</strong> — especially tense consistency and article use.</div></div>
+        <div class="check-item" onclick="toggleCheck(this)"><div class="check-box">✓</div><div class="check-text"><strong>Varied sentence length</strong> — mix of short punchy sentences and longer analytical ones.</div></div>
       </div>
-
-      <div class="score-display" id="checklist-score">
-        <span class="score-label">Checked</span>
-        <span class="score-value" id="checklist-score-val">0 / 10</span>
-      </div>
+      <div class="score-display" id="checklist-score"><span class="score-label">Checked</span><span class="score-value" id="checklist-score-val">0 / 10</span></div>
     </div>
-
     <div class="section">
-      <div class="section-header">
-        <span class="section-num">10 /</span>
-        <span class="section-title">What examiners actually reward</span>
-      </div>
-
+      <div class="section-header"><span class="section-num">10 /</span><span class="section-title">What examiners actually reward</span></div>
       <div class="feature-grid">
-        <div class="feature-card" style="border-color: rgba(200,169,110,0.3);">
-          <div class="feature-title">Task fulfilment</div>
-          <div class="feature-desc">Did you write an article? Does it address the prompt fully? Is the format correct?</div>
-        </div>
-        <div class="feature-card" style="border-color: rgba(126,184,164,0.3);">
-          <div class="feature-title">Coherence & cohesion</div>
-          <div class="feature-desc">Does it flow? Are ideas logically connected? Transitions matter.</div>
-        </div>
-        <div class="feature-card" style="border-color: rgba(200,169,110,0.3);">
-          <div class="feature-title">Lexical range</div>
-          <div class="feature-desc">Precise vocabulary, appropriate collocations, no repetition of simple words.</div>
-        </div>
-        <div class="feature-card" style="border-color: rgba(196,123,106,0.3);">
-          <div class="feature-title">Grammatical accuracy</div>
-          <div class="feature-desc">At C1: complex structures used correctly. Errors in basic forms penalised.</div>
-        </div>
+        <div class="feature-card" style="border-color:rgba(200,169,110,0.3);"><div class="feature-title">Task fulfilment</div><div class="feature-desc">Did you write an article? Does it address the prompt fully? Is the format correct?</div></div>
+        <div class="feature-card" style="border-color:rgba(126,184,164,0.3);"><div class="feature-title">Coherence & cohesion</div><div class="feature-desc">Does it flow? Are ideas logically connected? Transitions matter.</div></div>
+        <div class="feature-card" style="border-color:rgba(200,169,110,0.3);"><div class="feature-title">Lexical range</div><div class="feature-desc">Precise vocabulary, appropriate collocations, no repetition of simple words.</div></div>
+        <div class="feature-card" style="border-color:rgba(196,123,106,0.3);"><div class="feature-title">Grammatical accuracy</div><div class="feature-desc">At B1: simple structures used accurately. Errors in basic tenses and articles penalised.</div></div>
       </div>
     </div>
-
   </div>
-
-  <!-- BOTTOM NAV REPEAT -->
   <div class="bottom-nav">
-    <button class="nav-btn active" onclick="goPage(0, this)">1 · What Is It?</button>
-    <button class="nav-btn" onclick="goPage(1, this)">2 · Structure</button>
-    <button class="nav-btn" onclick="goPage(2, this)">3 · Register</button>
-    <button class="nav-btn" onclick="goPage(3, this)">4 · Phrases</button>
-    <button class="nav-btn" onclick="goPage(4, this)">5 · Check</button>
+    <button class="nav-btn active" onclick="goPage(0,this)">1 · What Is It?</button>
+    <button class="nav-btn" onclick="goPage(1,this)">2 · Structure</button>
+    <button class="nav-btn" onclick="goPage(2,this)">3 · Register</button>
+    <button class="nav-btn" onclick="goPage(3,this)">4 · Phrases</button>
+    <button class="nav-btn" onclick="goPage(4,this)">5 · Check</button>
   </div>
-
 </div>
-
 <script>
-  // ---- PAGE NAVIGATION ----
   let currentPage = 0;
-  const totalPages = 5;
-
   function goPage(idx, btn) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + idx).classList.add('active');
     document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.nav-btn').forEach(b => {
-      if (b.textContent === btn.textContent) b.classList.add('active');
-    });
+    document.querySelectorAll('.nav-btn').forEach(b => { if (b.textContent === btn.textContent) b.classList.add('active'); });
     currentPage = idx;
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
-
-  // ---- TIMER ----
-  let totalSeconds = 20 * 60;
-  let remaining = totalSeconds;
-  let running = false;
-  let interval = null;
-
+  let totalSeconds = 20 * 60, remaining = totalSeconds, running = false, interval = null;
   function toggleTimer() {
-    if (running) {
-      clearInterval(interval);
-      running = false;
-      document.getElementById('timerBtn').textContent = 'Resume';
-    } else {
-      running = true;
-      document.getElementById('timerBtn').textContent = 'Pause';
-      interval = setInterval(() => {
-        remaining--;
-        if (remaining <= 0) {
-          remaining = 0;
-          clearInterval(interval);
-          running = false;
-          document.getElementById('timerBtn').textContent = 'Done';
-        }
-        updateTimer();
-      }, 1000);
-    }
+    if (running) { clearInterval(interval); running = false; document.getElementById('timerBtn').textContent = 'Resume'; }
+    else { running = true; document.getElementById('timerBtn').textContent = 'Pause'; interval = setInterval(() => { remaining--; if (remaining <= 0) { remaining = 0; clearInterval(interval); running = false; document.getElementById('timerBtn').textContent = 'Done'; } updateTimer(); }, 1000); }
   }
-
   function updateTimer() {
-    const m = Math.floor(remaining / 60);
-    const s = remaining % 60;
-    const display = document.getElementById('timerDisplay');
-    const fill = document.getElementById('progressFill');
+    const m = Math.floor(remaining / 60), s = remaining % 60;
+    const display = document.getElementById('timerDisplay'), fill = document.getElementById('progressFill');
     display.textContent = m + ':' + String(s).padStart(2, '0');
-    const pct = (remaining / totalSeconds) * 100;
-    fill.style.width = pct + '%';
-    const warning = remaining < 5 * 60;
-    display.className = 'timer-display' + (warning ? ' warning' : '');
-    fill.className = 'progress-fill' + (warning ? ' warning' : '');
+    fill.style.width = (remaining / totalSeconds * 100) + '%';
+    const w = remaining < 300;
+    display.className = 'timer-display' + (w ? ' warning' : '');
+    fill.className = 'progress-fill' + (w ? ' warning' : '');
   }
-
-  // ---- QUIZ ----
   const feedback = {
     q1: { correct: "Correct. Register is determined by audience and publication — not by a blanket rule.", wrong: "Not quite. An article for a school magazine should not sound like an academic essay." },
     q2: { correct: "Yes. This puts the reader inside a recognisable moment immediately. Option A is an essay cliché. Option C is vague and impersonal.", wrong: "This is an essay formula (A) or an impersonal generalisation (C). B creates an immediate, relatable scenario." },
     q3: { correct: "Correct. Always write your own headline — it is part of demonstrating article format.", wrong: "Not correct. Including your own headline is expected and shows command of the form." }
   };
-
   let scores = { q1: null, q2: null, q3: null };
-
   function answer(btn, qid, isCorrect) {
     const qDiv = document.getElementById(qid);
     if (qDiv.dataset.answered) return;
     qDiv.dataset.answered = 'true';
     const fb = document.getElementById(qid + '-fb');
-    const opts = qDiv.querySelectorAll('.quiz-option');
-    opts.forEach(o => { o.classList.add('disabled'); });
-    if (isCorrect) {
-      btn.classList.add('correct');
-      fb.textContent = '✓ ' + feedback[qid].correct;
-      fb.className = 'quiz-feedback show correct';
-      scores[qid] = true;
-    } else {
-      btn.classList.add('wrong');
-      fb.textContent = '✗ ' + feedback[qid].wrong;
-      fb.className = 'quiz-feedback show wrong';
-      scores[qid] = false;
-      opts.forEach(o => {
-        if (!o.classList.contains('wrong')) o.classList.add('correct');
-      });
-    }
+    qDiv.querySelectorAll('.quiz-option').forEach(o => o.classList.add('disabled'));
+    if (isCorrect) { btn.classList.add('correct'); fb.textContent = '✓ ' + feedback[qid].correct; fb.className = 'quiz-feedback show correct'; scores[qid] = true; }
+    else { btn.classList.add('wrong'); fb.textContent = '✗ ' + feedback[qid].wrong; fb.className = 'quiz-feedback show wrong'; scores[qid] = false; qDiv.querySelectorAll('.quiz-option').forEach(o => { if (!o.classList.contains('wrong')) o.classList.add('correct'); }); }
     const total = Object.values(scores).filter(v => v === true).length;
-    const answered = Object.values(scores).filter(v => v !== null).length;
-    if (answered === 3) {
-      document.getElementById('score-p1').style.display = 'flex';
-      document.getElementById('score-p1-val').textContent = total + ' / 3';
-    }
+    if (Object.values(scores).filter(v => v !== null).length === 3) { document.getElementById('score-p1').style.display = 'flex'; document.getElementById('score-p1-val').textContent = total + ' / 3'; }
   }
-
-  // ---- REGISTER SORT ----
   const regFeedback = {
     reg1: "Correct — the direct question and personal tone suit a school magazine reader.",
     reg2: "Correct — the academic vocabulary and structural framing suit a quality newspaper.",
     reg3: "Correct — the listicle-style headline and accessible framing suit an online platform."
   };
-
   function registerAnswer(btn, isCorrect, id) {
     const task = btn.closest('.register-task');
     if (task.dataset.answered) return;
     task.dataset.answered = 'true';
     const fb = document.getElementById(id + '-fb');
     task.querySelectorAll('.register-btn').forEach(b => b.disabled = true);
-    if (isCorrect) {
-      btn.classList.add('correct');
-      fb.textContent = '✓ ' + regFeedback[id];
-      fb.className = 'quiz-feedback show correct';
-    } else {
-      btn.classList.add('wrong');
-      fb.textContent = '✗ ' + regFeedback[id];
-      fb.className = 'quiz-feedback show wrong';
-    }
+    if (isCorrect) { btn.classList.add('correct'); fb.textContent = '✓ ' + regFeedback[id]; fb.className = 'quiz-feedback show correct'; }
+    else { btn.classList.add('wrong'); fb.textContent = '✗ ' + regFeedback[id]; fb.className = 'quiz-feedback show wrong'; }
   }
-
-  // ---- COLLAPSE TOGGLES ----
-  function toggleCollapse(header) {
-    const body = header.nextElementSibling;
-    header.classList.toggle('open');
-    body.classList.toggle('open');
-  }
-
-  // ---- CHECKLIST ----
-  function toggleCheck(item) {
-    item.classList.toggle('checked');
-    const total = document.querySelectorAll('.check-item.checked').length;
-    document.getElementById('checklist-score-val').textContent = total + ' / 10';
-  }
+  function toggleCollapse(header) { const body = header.nextElementSibling; header.classList.toggle('open'); body.classList.toggle('open'); }
+  function toggleCheck(item) { item.classList.toggle('checked'); document.getElementById('checklist-score-val').textContent = document.querySelectorAll('.check-item.checked').length + ' / 10'; }
 </script>
 </body>
 </html>
